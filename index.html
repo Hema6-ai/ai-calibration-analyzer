@@ -1,0 +1,922 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Outfit',sans-serif;background:transparent;}
+.wrap{padding:1rem 0.4rem;max-width:840px;margin:0 auto;}
+
+/* ── HERO HEADER ── */
+.hero{border-radius:20px;padding:24px 28px 20px;margin-bottom:1.2rem;background:linear-gradient(135deg,#eef2ff 0%,#f5f3ff 40%,#fce7f3 100%);border:1px solid #e0d9f7;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-30px;right:-30px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,#c7d2fe55,transparent 70%);}
+.hero::after{content:'';position:absolute;bottom:-20px;left:40%;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,#fbcfe855,transparent 70%);}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #e0d9f7;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:#7c3aed;letter-spacing:0.06em;margin-bottom:10px;}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:#a78bfa;animation:pulse 1.8s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(0.8);}}
+.hero h1{font-size:22px;font-weight:700;color:#2d1b69;letter-spacing:-0.02em;line-height:1.2;margin-bottom:6px;}
+.hero h1 span{color:#7c3aed;}
+.hero p{font-size:13px;color:#6b5b9a;line-height:1.6;max-width:500px;}
+.hero-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.hpill{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:500;}
+.hpill.hp1{background:#dbeafe;color:#1d4ed8;}
+.hpill.hp2{background:#fce7f3;color:#9d174d;}
+.hpill.hp3{background:#d1fae5;color:#065f46;}
+.hpill.hp4{background:#fef3c7;color:#92400e;}
+
+/* tabs */
+.tabs{display:flex;gap:6px;margin-bottom:1.2rem;background:#f5f3ff;border-radius:12px;padding:4px;}
+.tab{flex:1;padding:8px 0;text-align:center;border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;color:#9790b8;border:none;background:transparent;font-family:'Outfit',sans-serif;transition:all 0.15s;letter-spacing:0.01em;}
+.tab.active{background:#fff;color:#4338ca;box-shadow:0 1px 6px rgba(67,56,202,0.14);}
+
+.page{display:none;} .page.show{display:block;}
+.slabel{font-size:10px;font-weight:700;letter-spacing:0.1em;color:#a8a29e;text-transform:uppercase;margin-bottom:10px;}
+
+/* use case grid */
+.uc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:1.2rem;}
+.uc-card{border-radius:14px;padding:14px 16px;border:1.5px solid;cursor:pointer;transition:transform 0.12s,box-shadow 0.12s;}
+.uc-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.07);}
+.uc-card h3{font-size:13px;font-weight:600;margin-bottom:4px;}
+.uc-card p{font-size:11px;line-height:1.5;margin-bottom:8px;}
+.uc-card.med{background:#fff1f2;border-color:#fecdd3;} .uc-card.med h3{color:#9f1239;} .uc-card.med p{color:#be123c;}
+.uc-card.ml{background:#eef2ff;border-color:#c7d2fe;} .uc-card.ml h3{color:#3730a3;} .uc-card.ml p{color:#4338ca;}
+.uc-card.fin{background:#ecfdf5;border-color:#bbf7d0;} .uc-card.fin h3{color:#065f46;} .uc-card.fin p{color:#047857;}
+.uc-card.auto{background:#fefce8;border-color:#fde68a;} .uc-card.auto h3{color:#92400e;} .uc-card.auto p{color:#b45309;}
+.load-preset{padding:5px 12px;border-radius:20px;border:1.5px solid currentColor;font-size:11px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;background:transparent;transition:all 0.12s;}
+.uc-card.med .load-preset{color:#9f1239;} .uc-card.med .load-preset:hover{background:#fecdd3;}
+.uc-card.ml .load-preset{color:#3730a3;} .uc-card.ml .load-preset:hover{background:#c7d2fe;}
+.uc-card.fin .load-preset{color:#065f46;} .uc-card.fin .load-preset:hover{background:#bbf7d0;}
+.uc-card.auto .load-preset{color:#92400e;} .uc-card.auto .load-preset:hover{background:#fde68a;}
+
+/* panel */
+.panel{background:#fafaf9;border:1px solid #ede9e0;border-radius:16px;padding:16px 18px;margin-bottom:12px;}
+.panel-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.panel-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.panel-head h2{font-size:13px;font-weight:600;color:#3d3a4e;}
+.panel-head p{font-size:11px;color:#a8a29e;}
+
+/* ── STATE ROWS ── */
+.state-inputs{display:flex;flex-direction:column;gap:10px;}
+.state-row-inp{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;border:1.5px solid;transition:box-shadow 0.12s;}
+.state-row-inp:focus-within{box-shadow:0 0 0 3px rgba(165,180,252,0.3);}
+.state-row-inp.sr1{background:#f5f7ff;border-color:#c7d2fe;}
+.state-row-inp.sr2{background:#fff5f6;border-color:#fecdd3;}
+.state-row-inp.sr3{background:#f0fdf8;border-color:#bbf7d0;}
+.sbadge{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+.sb1{background:#c7d2fe;color:#3730a3;} .sb2{background:#fecdd3;color:#9f1239;} .sb3{background:#bbf7d0;color:#065f46;}
+.state-name-inp{flex:1;font-size:13px;font-weight:500;border:none;background:transparent;font-family:'Outfit',sans-serif;color:#3d3a4e;outline:none;}
+.state-name-inp::placeholder{color:#c4c0d8;}
+
+/* ── PI INPUT — fixed visibility ── */
+.pi-wrap{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.pi-label{font-size:11px;color:#a8a29e;font-weight:500;font-family:'JetBrains Mono',monospace;}
+.pi-inp{width:72px;border:1.5px solid #c7d2fe;border-radius:10px;padding:6px 10px;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:#3730a3;background:#eef2ff;text-align:center;outline:none;-moz-appearance:textfield;}
+.pi-inp::-webkit-inner-spin-button,.pi-inp::-webkit-outer-spin-button{opacity:1;height:20px;}
+.pi-inp:focus{border-color:#818cf8;box-shadow:0 0 0 3px rgba(129,140,248,0.2);}
+.sr2 .pi-inp{border-color:#fecdd3;color:#9f1239;background:#fff1f2;}
+.sr2 .pi-inp:focus{border-color:#f9a8d4;box-shadow:0 0 0 3px rgba(249,168,212,0.2);}
+.sr3 .pi-inp{border-color:#bbf7d0;color:#065f46;background:#ecfdf5;}
+.sr3 .pi-inp:focus{border-color:#6ee7b7;box-shadow:0 0 0 3px rgba(110,231,183,0.2);}
+.pi-sum-row{display:flex;align-items:center;gap:8px;margin-top:8px;padding:8px 14px;border-radius:10px;border:1px solid #e8e4f0;background:#fff;font-size:12px;}
+.pi-sum-row .pslbl{color:#9790b8;font-weight:500;}
+.pi-sum-val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;}
+.pi-sum-ok{color:#059669;} .pi-sum-bad{color:#e11d48;}
+.pi-hint{margin-left:auto;font-size:11px;color:#c4c0d8;}
+
+/* matrix */
+.mat-inp-wrap{overflow-x:auto;}
+.mat-inp{border-collapse:separate;border-spacing:4px;}
+.mat-inp th{font-size:10px;color:#a8a29e;font-weight:600;padding:4px 8px;text-align:center;letter-spacing:0.05em;}
+.mat-inp td{padding:2px;}
+.mat-inp input{width:58px;border:1.5px solid #e8e4f0;border-radius:10px;padding:7px 0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:#3d3a4e;background:#fff;outline:none;transition:border-color 0.12s;}
+.mat-inp input:focus{border-color:#a5b4fc;box-shadow:0 0 0 3px rgba(165,180,252,0.2);}
+.mat-inp .diag-inp input{background:#eef2ff;color:#4338ca;border-color:#c7d2fe;}
+.row-sum{font-size:11px;padding:4px 8px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-weight:600;}
+.row-ok{background:#ecfdf5;color:#059669;} .row-bad{background:#fff1f2;color:#e11d48;}
+
+/* validation */
+.val-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.val-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;}
+.chip-ok{background:#ecfdf5;color:#065f46;border:1px solid #bbf7d0;}
+.chip-bad{background:#fff1f2;color:#9f1239;border:1px solid #fecdd3;}
+.chip-warn{background:#fefce8;color:#92400e;border:1px solid #fde68a;}
+
+/* run button */
+.run-btn{width:100%;padding:13px;border-radius:14px;border:none;background:linear-gradient(135deg,#818cf8 0%,#a78bfa 100%);color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;margin-bottom:12px;letter-spacing:0.02em;transition:opacity 0.15s,transform 0.12s;box-shadow:0 4px 16px rgba(129,140,248,0.35);}
+.run-btn:hover{opacity:0.92;transform:translateY(-1px);}
+.run-btn:disabled{background:#e5e3f0;color:#b0adc8;cursor:not-allowed;box-shadow:none;transform:none;}
+
+/* sim */
+.ctrl-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:center;}
+.btn{padding:7px 18px;border-radius:20px;border:1.5px solid;font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.12s;}
+.btn-go{background:#eef2ff;border-color:#c7d2fe;color:#4338ca;} .btn-go:hover{background:#c7d2fe;}
+.btn-auto{background:#ecfdf5;border-color:#bbf7d0;color:#065f46;} .btn-auto:hover{background:#bbf7d0;}
+.btn-rst{background:#fff1f2;border-color:#fecdd3;color:#9f1239;} .btn-rst:hover{background:#fecdd3;}
+.spd-wrap{display:flex;align-items:center;gap:6px;margin-left:auto;}
+.spd-wrap label{font-size:11px;color:#a8a29e;font-weight:500;}
+input[type=range]{accent-color:#a5b4fc;width:80px;}
+.spd-val{font-size:11px;color:#6d6b7e;font-family:'JetBrains Mono',monospace;font-weight:600;}
+.chain-path{display:flex;flex-wrap:wrap;gap:5px;align-items:center;min-height:44px;padding:10px 14px;background:#fafaf9;border:1px solid #ede9e0;border-radius:12px;margin-bottom:10px;}
+.cnode{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Outfit',sans-serif;}
+.carr{color:#d4d0e8;font-size:11px;}
+.tbl-wrap{border-radius:12px;border:1px solid #ede9e0;overflow:hidden;overflow-x:auto;}
+table.itbl{width:100%;border-collapse:collapse;font-size:12px;min-width:520px;}
+table.itbl thead th{background:#f5f3ff;padding:8px 10px;font-weight:700;color:#9790b8;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;border-bottom:1px solid #ede9e0;}
+table.itbl tbody td{padding:7px 10px;border-bottom:1px solid #f5f3ef;color:#3d3a4e;font-family:'JetBrains Mono',monospace;font-size:12px;}
+table.itbl tbody tr:last-child td{border-bottom:none;}
+.pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+.acc{color:#059669;font-weight:700;} .rej{color:#e11d48;font-weight:700;}
+.dist-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.dlbl{font-size:11px;font-weight:700;width:24px;font-family:'Outfit',sans-serif;}
+.dtrack{flex:1;height:10px;background:#f0eefb;border-radius:5px;overflow:hidden;}
+.dfill{height:100%;border-radius:5px;transition:width 0.4s ease;}
+.dpct{font-size:12px;font-family:'JetBrains Mono',monospace;font-weight:600;color:#6d6b7e;width:36px;text-align:right;}
+.map-chip{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:14px;font-size:14px;font-weight:700;margin-top:8px;}
+.insight-box{background:linear-gradient(135deg,#f5f3ff,#eef2ff);border:1.5px solid #c7d2fe;border-radius:14px;padding:14px 16px;margin-top:12px;}
+.insight-box h4{font-size:12px;font-weight:700;color:#3730a3;margin-bottom:6px;letter-spacing:0.04em;}
+.insight-box p{font-size:12px;color:#4338ca;line-height:1.6;}
+.two-col-sim{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.empty-note{font-size:12px;color:#c4c0d8;font-style:italic;font-family:'Outfit',sans-serif;}
+.step-count{margin-left:8px;font-size:11px;color:#a8a29e;font-family:'JetBrains Mono',monospace;}
+
+/* ── CALIBRATION CURVE CHART ── */
+.cal-panel{background:#fafaf9;border:1px solid #ede9e0;border-radius:16px;padding:16px 18px;margin-top:12px;}
+.cal-panel-head{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.cal-subtitle{font-size:11px;color:#a8a29e;margin-bottom:14px;line-height:1.5;}
+.cal-subtitle b{color:#6d6b7e;font-weight:600;}
+.cal-canvas-wrap{position:relative;width:100%;height:220px;}
+.cal-empty{display:flex;align-items:center;justify-content:center;height:120px;font-size:12px;color:#c4c0d8;font-style:italic;font-family:'Outfit',sans-serif;}
+/* ── DISTRIBUTION CHART ── */
+.chart-panel{background:#fafaf9;border:1px solid #ede9e0;border-radius:16px;padding:16px 18px;margin-top:12px;}
+.chart-panel-head{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.chart-canvas-wrap{position:relative;width:100%;height:200px;}
+/* ── CSV UPLOAD PANEL ── */
+.upload-panel{background:linear-gradient(135deg,#f5f3ff 0%,#eef2ff 100%);border:1.5px dashed #a5b4fc;border-radius:16px;padding:16px 18px;margin-bottom:12px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.upload-label-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 20px;border-radius:12px;background:#fff;border:1.5px solid #c7d2fe;color:#4338ca;font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.15s;box-shadow:0 2px 8px rgba(129,140,248,0.12);}
+.upload-label-btn:hover{background:#eef2ff;border-color:#818cf8;box-shadow:0 4px 14px rgba(129,140,248,0.22);}
+#csvFileInput{display:none;}
+.upload-hint{font-size:11px;color:#9790b8;line-height:1.6;}
+.upload-hint code{background:#e8e4f8;border-radius:5px;padding:1px 6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#4338ca;}
+.csv-toast{display:none;align-items:center;gap:7px;background:#ecfdf5;border:1.5px solid #6ee7b7;border-radius:10px;padding:7px 14px;font-size:12px;font-weight:600;color:#065f46;margin-top:8px;width:100%;}
+.csv-toast.show{display:flex;}
+</style>
+
+<div class="wrap">
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-tag"><div class="hero-dot"></div>Probabilistic Inference Engine</div>
+  <h1>AI Confidence <span>Calibration</span><br>via Metropolis-Hastings</h1>
+  <p>Model your AI system's prediction behavior as a Markov Chain. Use MH sampling to verify if your model's confidence distribution matches reality — before it fails in production.</p>
+  <div class="hero-pills">
+    <span class="hpill hp1">Markov Chain</span>
+    <span class="hpill hp2">MH Algorithm</span>
+    <span class="hpill hp3">MAP Inference</span>
+    <span class="hpill hp4">Stationary Distribution</span>
+  </div>
+</div>
+
+<!-- tabs -->
+<div class="tabs">
+  <button class="tab active" onclick="showTab('setup')">① Setup &amp; Domain</button>
+  <button class="tab" onclick="showTab('sim')">② Simulate &amp; Analyse</button>
+</div>
+
+<!-- ═══ TAB 1 ═══ -->
+<div class="page show" id="page-setup">
+
+  <div class="slabel">Pick a domain or load a preset</div>
+  <div class="uc-grid">
+    <div class="uc-card med"><h3>🏥 Medical AI</h3><p>Catch overconfident wrong diagnoses before they harm patients.</p><button class="load-preset" onclick="loadPreset('med')">Load preset →</button></div>
+    <div class="uc-card ml"><h3>🤖 ML Calibration</h3><p>Verify classifier confidence states post-training match expectations.</p><button class="load-preset" onclick="loadPreset('ml')">Load preset →</button></div>
+    <div class="uc-card fin"><h3>📈 Finance / Risk</h3><p>Track confident-wrong regime calls in market models.</p><button class="load-preset" onclick="loadPreset('fin')">Load preset →</button></div>
+    <div class="uc-card auto"><h3>🚗 Autonomous Systems</h3><p>Monitor overconfident detections before deployment sign-off.</p><button class="load-preset" onclick="loadPreset('auto')">Load preset →</button></div>
+  </div>
+
+  <!-- states -->
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-icon" style="background:#eef2ff;">🎯</div>
+      <div><h2>State Definition &amp; Target Distribution π</h2><p>Name your 3 prediction states and set desired probability for each</p></div>
+    </div>
+    <div class="state-inputs">
+      <div class="state-row-inp sr1"><div class="sbadge sb1">C1</div><input class="state-name-inp" id="s0" value="High Confidence & Correct" placeholder="State name…"><div class="pi-wrap"><span class="pi-label">π =</span><input class="pi-inp" id="p0" type="number" step="0.01" min="0.01" max="0.98" value="0.50" oninput="validatePi()"></div></div>
+      <div class="state-row-inp sr2"><div class="sbadge sb2">C2</div><input class="state-name-inp" id="s1" value="High Confidence & Wrong" placeholder="State name…"><div class="pi-wrap"><span class="pi-label" style="color:#be123c;">π =</span><input class="pi-inp" id="p1" type="number" step="0.01" min="0.01" max="0.98" value="0.30" oninput="validatePi()"></div></div>
+      <div class="state-row-inp sr3"><div class="sbadge sb3">C3</div><input class="state-name-inp" id="s2" value="Low Confidence" placeholder="State name…"><div class="pi-wrap"><span class="pi-label" style="color:#047857;">π =</span><input class="pi-inp" id="p2" type="number" step="0.01" min="0.01" max="0.98" value="0.20" oninput="validatePi()"></div></div>
+    </div>
+    <div class="pi-sum-row">
+      <span class="pslbl">π total</span>
+      <span class="pi-sum-val" id="piSumVal">1.00</span>
+      <span id="piSumIcon">✓</span>
+      <span class="pi-hint">must equal exactly 1.0</span>
+    </div>
+  </div>
+
+  <!-- ── CSV UPLOAD ── -->
+  <div class="upload-panel">
+    <label class="upload-label-btn" for="csvFileInput">
+      📂 Upload Dataset (CSV)
+    </label>
+    <input type="file" id="csvFileInput" accept=".csv,text/csv" onchange="handleCsvUpload(this)">
+    <div class="upload-hint">
+      Upload a CSV with columns: <code>prediction</code>, <code>confidence</code>, <code>actual</code><br>
+      π will be auto-computed: C1 = high-conf correct · C2 = high-conf wrong · C3 = low-conf
+    </div>
+    <div class="csv-toast" id="csvToast">✅ Dataset loaded → π updated from real data</div>
+  </div>
+
+  <!-- matrix -->
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-icon" style="background:#ecfdf5;">🔀</div>
+      <div><h2>Transition Probability Matrix P</h2><p>Each row = probability of moving from that state to another. Rows must sum to 1.0</p></div>
+    </div>
+    <div class="mat-inp-wrap">
+      <table class="mat-inp">
+        <thead><tr><th></th><th>→ C1</th><th>→ C2</th><th>→ C3</th><th>row sum</th></tr></thead>
+        <tbody id="matBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="val-bar" id="valBar"></div>
+  <button class="run-btn" id="runBtn" onclick="goToSim()">Validate &amp; Run Simulation →</button>
+</div>
+
+<!-- ═══ TAB 2 ═══ -->
+<div class="page" id="page-sim">
+  <div class="panel" style="margin-bottom:10px;">
+    <div class="panel-head">
+      <div class="panel-icon" style="background:#fefce8;">⛓</div>
+      <div><h2>Markov Chain Path</h2><p>States visited by the MH sampler</p></div>
+    </div>
+    <div class="chain-path" id="chainPath"><span class="empty-note">press Step to begin…</span></div>
+    <div class="ctrl-row">
+      <button class="btn btn-go" onclick="runStep()">Step ↓</button>
+      <button class="btn btn-auto" onclick="runAuto()" id="autoBtn">Auto-run</button>
+      <button class="btn btn-rst" onclick="resetSim()">Reset</button>
+      <span class="step-count" id="stepCount"></span>
+      <div class="spd-wrap">
+        <label>Speed</label>
+        <input type="range" min="150" max="1500" value="700" id="spd" oninput="autoDelay=+this.value;document.getElementById('spdv').textContent=this.value+'ms'">
+        <span class="spd-val" id="spdv">700ms</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-bottom:10px;">
+    <div class="panel-head">
+      <div class="panel-icon" style="background:#f5f3ff;">📋</div>
+      <div><h2>Iteration Log</h2><p>Last 6 MH steps with acceptance decisions</p></div>
+    </div>
+    <div class="tbl-wrap">
+      <table class="itbl">
+        <thead><tr><th>#</th><th>Current</th><th>Proposed</th><th>π(cur)</th><th>π(prop)</th><th>α</th><th>rand</th><th>Decision</th></tr></thead>
+        <tbody id="iterBody"><tr><td colspan="8" style="text-align:center;padding:14px;" class="empty-note">no iterations yet</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="two-col-sim">
+    <div class="panel">
+      <div class="panel-head"><div class="panel-icon" style="background:#ecfdf5;">📊</div><div><h2>Stationary Distribution</h2><p>Empirical from samples</p></div></div>
+      <div id="distBars"><div class="empty-note">run simulation to see</div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div class="panel-icon" style="background:#fff1f2;">🏆</div><div><h2>MAP Inference</h2><p>Most probable state</p></div></div>
+      <div id="mapResult"><span class="empty-note">—</span></div>
+      <div class="insight-box" id="insightBox" style="display:none;">
+        <h4>⚡ Calibration Insight</h4>
+        <p id="insightText"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DISTRIBUTION COMPARISON CHART ── -->
+  <div class="chart-panel">
+    <div class="chart-panel-head">
+      <div class="panel-icon" style="background:#f0f4ff;font-size:14px;">📈</div>
+      <div>
+        <h2 style="font-size:13px;font-weight:600;color:#3d3a4e;">Distribution Comparison</h2>
+        <p style="font-size:11px;color:#a8a29e;">Target π vs Empirical stationary distribution</p>
+      </div>
+    </div>
+    <div class="chart-canvas-wrap">
+      <canvas id="distChart"></canvas>
+    </div>
+  </div>
+
+  <!-- ── CONFIDENCE CALIBRATION CURVE ── -->
+  <div class="cal-panel">
+    <div class="cal-panel-head">
+      <div class="panel-icon" style="background:#eef2ff;font-size:14px;">🎯</div>
+      <div><h2 style="font-size:13px;font-weight:600;color:#3d3a4e;">Confidence Calibration Curve</h2></div>
+    </div>
+    <p class="cal-subtitle" id="calSubtitle">
+      Plots <b>predicted confidence</b> vs <b>actual accuracy</b> across 5 bins.
+      The dashed diagonal = perfect calibration. Points above = underconfident; below = overconfident.
+      <b id="calDataSource" style="color:#818cf8;">· Using simulated calibration (no dataset)</b>
+    </p>
+    <div class="cal-canvas-wrap">
+      <canvas id="calibrationChart"></canvas>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+const PRESETS={
+  med:{s:['Confident & Correct','Confident & Wrong','Unsure / Abstains'],pi:[0.55,0.30,0.15],P:[[0.65,0.20,0.15],[0.25,0.55,0.20],[0.35,0.15,0.50]]},
+  ml: {s:['Correct (high conf)','Wrong (high conf)','Low confidence'],pi:[0.50,0.30,0.20],P:[[0.60,0.20,0.20],[0.30,0.50,0.20],[0.40,0.20,0.40]]},
+  fin:{s:['Bull (correct call)','Bull (wrong call)','Hedge / Wait'],pi:[0.45,0.35,0.20],P:[[0.55,0.25,0.20],[0.30,0.50,0.20],[0.40,0.20,0.40]]},
+  auto:{s:['Detect & Correct','Detect & Wrong','Low conf / Skip'],pi:[0.60,0.25,0.15],P:[[0.70,0.15,0.15],[0.20,0.60,0.20],[0.45,0.15,0.40]]},
+};
+const COLORS=[['#c7d2fe','#3730a3'],['#fecdd3','#9f1239'],['#bbf7d0','#065f46']];
+const BARFILL=['#818cf8','#fb7185','#34d399'];
+let P=[[0.6,0.2,0.2],[0.3,0.5,0.2],[0.4,0.2,0.4]];
+let pi=[0.5,0.3,0.2];
+let states=['High Confidence & Correct','High Confidence & Wrong','Low Confidence'];
+let cur=0,hist=[],counts=[0,0,0],timer=null,autoDelay=700;
+let dataset = []; // populated when CSV is uploaded; empty = use synthetic fallback
+
+function buildMatrix(){
+  const body=document.getElementById('matBody');
+  body.innerHTML=['C1','C2','C3'].map((r,i)=>`<tr>
+    <th style="font-size:11px;color:#9790b8;padding-right:8px;font-weight:700;">${r}</th>
+    ${[0,1,2].map(j=>`<td class="${i===j?'diag-inp':''}"><input id="m${i}${j}" type="number" step="0.01" min="0" max="1" value="${P[i][j].toFixed(2)}" oninput="validateMatrix()"></td>`).join('')}
+    <td><span class="row-sum" id="rs${i}">—</span></td>
+  </tr>`).join('');
+  validateMatrix();validatePi();
+}
+
+function readMatrix(){for(let i=0;i<3;i++)for(let j=0;j<3;j++){const v=parseFloat(document.getElementById('m'+i+j).value)||0;P[i][j]=v;}}
+
+function validateMatrix(){
+  readMatrix();
+  for(let i=0;i<3;i++){
+    const s=P[i].reduce((a,b)=>a+b,0);
+    const el=document.getElementById('rs'+i);
+    el.textContent=s.toFixed(2);el.className='row-sum '+(Math.abs(s-1)<0.011?'row-ok':'row-bad');
+  }renderValBar();
+}
+
+function validatePi(){
+  pi=[0,1,2].map(i=>parseFloat(document.getElementById('p'+i).value)||0);
+  const s=pi.reduce((a,b)=>a+b,0);
+  const ok=Math.abs(s-1)<0.011;
+  const sv=document.getElementById('piSumVal');
+  const si=document.getElementById('piSumIcon');
+  sv.textContent=s.toFixed(2);sv.className='pi-sum-val '+(ok?'pi-sum-ok':'pi-sum-bad');
+  si.textContent=ok?'✓':'✗';si.style.color=ok?'#059669':'#e11d48';
+  renderValBar();
+}
+
+function renderValBar(){
+  readMatrix();
+  const piSum=pi.reduce((a,b)=>a+b,0);
+  const rowsOk=[0,1,2].every(i=>Math.abs(P[i].reduce((a,b)=>a+b,0)-1)<0.011);
+  const piOk=Math.abs(piSum-1)<0.011;
+  const piAllPos=pi.every(v=>v>0);
+  document.getElementById('valBar').innerHTML=
+    `<span class="val-chip ${piOk?'chip-ok':'chip-bad'}">${piOk?'✓':'✗'} π sums to ${piSum.toFixed(2)}</span>`+
+    `<span class="val-chip ${rowsOk?'chip-ok':'chip-bad'}">${rowsOk?'✓':'✗'} All rows sum to 1.0</span>`+
+    `<span class="val-chip ${piAllPos?'chip-ok':'chip-warn'}">${piAllPos?'✓':'!'} All π > 0</span>`;
+  document.getElementById('runBtn').disabled=!(piOk&&rowsOk&&piAllPos);
+}
+
+function loadPreset(k){
+  const pr=PRESETS[k];
+  [0,1,2].forEach(i=>{document.getElementById('s'+i).value=pr.s[i];document.getElementById('p'+i).value=pr.pi[i];});
+  P=pr.P.map(r=>[...r]);buildMatrix();
+}
+
+function goToSim(){
+  states=[0,1,2].map(i=>document.getElementById('s'+i).value.trim());
+  pi=[0,1,2].map(i=>parseFloat(document.getElementById('p'+i).value));
+  readMatrix();resetSim();showTab('sim');
+}
+
+function showTab(id){
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['setup','sim'][i]===id));
+  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('show',p.id==='page-'+id));
+}
+
+function propose(s){const r=Math.random();let c=0;for(let i=0;i<3;i++){c+=P[s][i];if(r<c)return i;}return 2;}
+
+function runStep(){
+  if(hist.length===0)counts[cur]++;
+  const prop=propose(cur);
+  const alpha=Math.min(1,pi[prop]/pi[cur]);
+  const rand=Math.random();const acc=rand<alpha;
+  const prev=cur;if(acc)cur=prop;
+  counts[cur]++;
+  hist.push({step:hist.length+1,prev,prop,alpha,rand,acc,next:cur});
+  document.getElementById('stepCount').textContent=`${hist.length} steps`;
+  renderChain();renderTable();renderDist();
+}
+
+function runAuto(){
+  if(timer){clearInterval(timer);timer=null;document.getElementById('autoBtn').textContent='Auto-run';return;}
+  document.getElementById('autoBtn').textContent='⏹ Stop';
+  timer=setInterval(()=>{if(hist.length>=80){clearInterval(timer);timer=null;document.getElementById('autoBtn').textContent='Auto-run';return;}runStep();},autoDelay);
+}
+
+function resetSim(){
+  if(timer){clearInterval(timer);timer=null;document.getElementById('autoBtn').textContent='Auto-run';}
+  cur=0;hist=[];counts=[0,0,0];
+  document.getElementById('stepCount').textContent='';
+  document.getElementById('chainPath').innerHTML='<span class="empty-note">press Step to begin…</span>';
+  document.getElementById('iterBody').innerHTML='<tr><td colspan="8" style="text-align:center;padding:14px;" class="empty-note">no iterations yet</td></tr>';
+  document.getElementById('distBars').innerHTML='<div class="empty-note">run simulation to see</div>';
+  document.getElementById('mapResult').innerHTML='<span class="empty-note">—</span>';
+  document.getElementById('insightBox').style.display='none';
+  if (calChartInstance) {
+    calChartInstance.data.datasets[1].data = [null, null, null, null, null];
+    calChartInstance.update();
+  }
+}
+
+function renderChain(){
+  const last=hist.slice(-14);
+  document.getElementById('chainPath').innerHTML=last.map((x,i)=>{
+    const[bg,tc]=COLORS[x.next];
+    return `<span class="cnode" style="background:${bg};color:${tc}">C${x.next+1}</span>`+(i<last.length-1?'<span class="carr">→</span>':'');
+  }).join('');
+}
+
+function renderTable(){
+  document.getElementById('iterBody').innerHTML=hist.slice(-6).map(r=>{
+    const[bg1,tc1]=COLORS[r.prev],[bg2,tc2]=COLORS[r.prop];
+    return `<tr>
+      <td style="color:#c4c0d8;font-weight:600">${r.step}</td>
+      <td><span class="pill" style="background:${bg1};color:${tc1}">C${r.prev+1}</span></td>
+      <td><span class="pill" style="background:${bg2};color:${tc2}">C${r.prop+1}</span></td>
+      <td>${pi[r.prev].toFixed(2)}</td><td>${pi[r.prop].toFixed(2)}</td>
+      <td>${r.alpha.toFixed(2)}</td><td>${r.rand.toFixed(2)}</td>
+      <td class="${r.acc?'acc':'rej'}">${r.acc?'Accept':'Reject'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderDist(){
+  const total=counts.reduce((a,b)=>a+b)||1;
+  document.getElementById('distBars').innerHTML=[0,1,2].map(i=>{
+    const pct=(counts[i]/total*100).toFixed(1);
+    return `<div class="dist-row">
+      <span class="dlbl" style="color:${COLORS[i][1]}">C${i+1}</span>
+      <div class="dtrack"><div class="dfill" style="width:${pct}%;background:${BARFILL[i]}"></div></div>
+      <span class="dpct">${pct}%</span>
+    </div><div style="font-size:10px;color:#b0adc8;margin:-6px 0 8px 34px;font-weight:500;">${states[i]}</div>`;
+  }).join('');
+  const mi=counts.indexOf(Math.max(...counts));
+  const[bg,tc]=COLORS[mi];
+  document.getElementById('mapResult').innerHTML=
+    `<div class="map-chip" style="background:${bg};color:${tc}">MAP = C${mi+1}</div>`+
+    `<div style="font-size:12px;color:#6d6b7e;margin-top:6px;font-weight:500;">${states[mi]}</div>`;
+  if(hist.length>=10){
+    const c2pct=counts[1]/total*100;
+    document.getElementById('insightBox').style.display='block';
+    document.getElementById('insightText').textContent=
+      c2pct>30?`Warning: ${c2pct.toFixed(0)}% time in "${states[1]}" — significant overconfidence. Apply temperature scaling or Platt scaling before production.`:
+      c2pct>15?`Moderate overconfidence (${c2pct.toFixed(0)}% in "${states[1]}"). Monitor closely and consider calibration.`:
+      `Well-calibrated. Only ${c2pct.toFixed(0)}% in overconfident-wrong state. MAP = "${states[mi]}" as expected.`;
+  }
+  updateChart();
+  renderCalibrationChart();
+}
+
+// ── CSV UPLOAD: parse dataset and update π ──────────────────────────────────
+function handleCsvUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const text = e.target.result || '';
+
+    // Robustly split lines — ignore blank lines
+    const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l !== '');
+
+    if (lines.length < 2) {
+      showCsvError('File appears empty or has no data rows.'); return;
+    }
+
+    // Case-insensitive, whitespace-trimmed header detection
+    const header = lines[0].split(',').map(h => h.trim().toLowerCase());
+    const predIdx   = header.indexOf('prediction');
+    const confIdx   = header.indexOf('confidence');
+    const actualIdx = header.indexOf('actual');
+
+    if (predIdx === -1 || confIdx === -1 || actualIdx === -1) {
+      showCsvError('CSV must have columns: prediction, confidence, actual'); return;
+    }
+
+    let c1 = 0, c2 = 0, c3 = 0, total = 0;
+    const maxColNeeded = Math.max(predIdx, confIdx, actualIdx);
+    dataset = []; // clear previous dataset before processing new file
+
+    for (let i = 1; i < lines.length; i++) {
+      const cols = lines[i].split(',').map(c => c.trim());
+      if (cols.length <= maxColNeeded) continue; // skip short/malformed rows
+
+      const prediction = cols[predIdx].toLowerCase();
+      const confidence = parseFloat(cols[confIdx]);
+      const actual     = cols[actualIdx].toLowerCase();
+
+      if (isNaN(confidence) || cols[predIdx] === '' || cols[actualIdx] === '') continue;
+      total++;
+
+      // Store full row for real calibration curve
+      const clampedConf = Math.min(1, Math.max(0, confidence));
+      dataset.push({ prediction, confidence: clampedConf, actual, correct: prediction === actual ? 1 : 0 });
+
+      if (confidence >= 0.7 && prediction === actual) {
+        c1++;
+      } else if (confidence >= 0.7 && prediction !== actual) {
+        c2++;
+      } else {
+        c3++;
+      }
+    }
+
+    if (total === 0) {
+      showCsvError('No valid rows found. Check CSV format.'); return;
+    }
+
+    // Capture previous π values for before/after display
+    const prevProbs = [0, 1, 2].map(i => parseFloat(document.getElementById('p' + i).value) || 0);
+
+    // Compute probabilities at full precision — clamp to 0.01 minimum to avoid zero-prob states
+    const rawProbs    = [c1 / total, c2 / total, c3 / total];
+    const clampedProbs = rawProbs.map(v => Math.max(v, 0.01));
+    const clampSum    = clampedProbs.reduce((a, b) => a + b, 0);
+
+    // Normalise to exactly 1.0000 — work in integers (×10000) to avoid float drift
+    let scaledProbs = clampedProbs.map(v => Math.round((v / clampSum) * 10000));
+    const scaledSum = scaledProbs.reduce((a, b) => a + b, 0);
+    // Adjust largest bucket to absorb any rounding residual
+    const maxIdx = scaledProbs.indexOf(Math.max(...scaledProbs));
+    scaledProbs[maxIdx] += (10000 - scaledSum);
+    const finalProbs = scaledProbs.map(v => v / 10000);
+
+    // Update π inputs (4 decimal places for visible precision)
+    [0, 1, 2].forEach(i => {
+      document.getElementById('p' + i).value = finalProbs[i].toFixed(4);
+    });
+
+    validatePi();
+    flashPiInputs();
+    showCsvSuccess(prevProbs, finalProbs, total);
+    console.log('Calibration from dataset:', dataset.length, 'rows');
+    updateCalSubtitle();
+    renderCalibrationChart();
+
+    input.value = ''; // allow re-upload of same file
+  };
+
+  reader.onerror = function() {
+    showCsvError('Failed to read file. Please try again.');
+  };
+
+  reader.readAsText(file);
+}
+
+// Briefly glow the π input boxes to signal they were updated
+function flashPiInputs() {
+  const glowColors = [
+    '0 0 0 3px rgba(99,102,241,0.35), 0 0 14px rgba(99,102,241,0.25)',   // indigo — C1
+    '0 0 0 3px rgba(244,63,94,0.30),  0 0 14px rgba(244,63,94,0.20)',    // rose  — C2
+    '0 0 0 3px rgba(16,185,129,0.35), 0 0 14px rgba(16,185,129,0.22)',   // green — C3
+  ];
+  [0, 1, 2].forEach(i => {
+    const inp = document.getElementById('p' + i);
+    inp.style.transition = 'box-shadow 0.2s ease, transform 0.2s ease';
+    inp.style.boxShadow  = glowColors[i];
+    inp.style.transform  = 'scale(1.06)';
+    setTimeout(() => {
+      inp.style.boxShadow = '';
+      inp.style.transform = '';
+    }, 1500);
+  });
+}
+
+// Show success toast with before → after π values
+function showCsvSuccess(prevProbs, finalProbs, total) {
+  const fmt   = arr => '[' + arr.map(v => parseFloat(v).toFixed(4)).join(', ') + ']';
+  const toast = document.getElementById('csvToast');
+  toast.innerHTML =
+    `<div style="display:flex;flex-direction:column;gap:3px;width:100%;">` +
+      `<div style="font-weight:700;font-size:12px;">✅ π updated from ${total} rows</div>` +
+      `<div style="font-family:'JetBrains Mono',monospace;font-size:11px;opacity:0.8;">` +
+        `${fmt(prevProbs)} → ${fmt(finalProbs)}` +
+      `</div>` +
+    `</div>`;
+  toast.style.background  = '#ecfdf5';
+  toast.style.borderColor = '#6ee7b7';
+  toast.style.color       = '#065f46';
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 5500);
+}
+
+function showCsvError(msg) {
+  const toast = document.getElementById('csvToast');
+  toast.textContent   = '⚠️ ' + msg;
+  toast.style.background  = '#fff1f2';
+  toast.style.borderColor = '#fecdd3';
+  toast.style.color       = '#9f1239';
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 5000);
+}
+// ────────────────────────────────────────────────────────────────────────────
+
+// ── DISTRIBUTION COMPARISON CHART ────────────────────────────────────────────
+let distChartInstance = null;
+
+function createChart() {
+  const ctx = document.getElementById('distChart').getContext('2d');
+  distChartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['C1', 'C2', 'C3'],
+      datasets: [
+        {
+          label: 'Target π',
+          data: [0, 0, 0],
+          backgroundColor: ['rgba(129,140,248,0.85)', 'rgba(129,140,248,0.85)', 'rgba(129,140,248,0.85)'],
+          borderColor:      ['#6366f1', '#6366f1', '#6366f1'],
+          borderWidth: 1.5,
+          borderRadius: 8,
+          borderSkipped: false,
+        },
+        {
+          label: 'Empirical Stationary',
+          data: [0, 0, 0],
+          backgroundColor: ['rgba(52,211,153,0.80)', 'rgba(52,211,153,0.80)', 'rgba(52,211,153,0.80)'],
+          borderColor:      ['#10b981', '#10b981', '#10b981'],
+          borderWidth: 1.5,
+          borderRadius: 8,
+          borderSkipped: false,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 350, easing: 'easeOutQuart' },
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: {
+            font: { family: "'Outfit', sans-serif", size: 11, weight: '600' },
+            color: '#6d6b7e',
+            usePointStyle: true,
+            pointStyleWidth: 10,
+            padding: 18,
+          }
+        },
+        tooltip: {
+          backgroundColor: '#fff',
+          titleColor: '#3d3a4e',
+          bodyColor: '#6d6b7e',
+          borderColor: '#ede9e0',
+          borderWidth: 1,
+          titleFont: { family: "'Outfit', sans-serif", weight: '700', size: 12 },
+          bodyFont:  { family: "'JetBrains Mono', monospace", size: 11 },
+          callbacks: {
+            label: ctx => ` ${ctx.dataset.label}: ${(ctx.parsed.y * 100).toFixed(2)}%`
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { font: { family: "'Outfit', sans-serif", size: 12, weight: '600' }, color: '#9790b8' },
+          border: { display: false }
+        },
+        y: {
+          min: 0,
+          max: 1,
+          grid: { color: '#f0eefb', lineWidth: 1 },
+          border: { display: false, dash: [4, 4] },
+          ticks: {
+            font: { family: "'JetBrains Mono', monospace", size: 10 },
+            color: '#b0adc8',
+            callback: v => (v * 100).toFixed(0) + '%',
+            maxTicksLimit: 6,
+          }
+        }
+      }
+    }
+  });
+}
+
+function updateChart() {
+  if (!distChartInstance) return;
+  const total = counts.reduce((a, b) => a + b) || 1;
+  const empirical = counts.map(c => c / total);
+  distChartInstance.data.datasets[0].data = [...pi];
+  distChartInstance.data.datasets[1].data = empirical;
+  distChartInstance.update();
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── CONFIDENCE CALIBRATION CURVE ─────────────────────────────────────────────
+let calChartInstance = null;
+
+// Bin boundaries and their midpoints
+const CAL_BINS = [
+  { lo: 0.0, hi: 0.2, mid: 0.1  },
+  { lo: 0.2, hi: 0.4, mid: 0.3  },
+  { lo: 0.4, hi: 0.6, mid: 0.5  },
+  { lo: 0.6, hi: 0.8, mid: 0.7  },
+  { lo: 0.8, hi: 1.0, mid: 0.9  },
+];
+
+// Assign a synthetic confidence value to each visited state drawn from its range.
+// C1 → high-conf correct  : confidence ∈ [0.80, 1.00]
+// C2 → high-conf wrong    : confidence ∈ [0.80, 1.00]
+// C3 → low confidence     : confidence ∈ [0.20, 0.60]
+const STATE_CONF_RANGE = [
+  [0.80, 1.00],  // C1
+  [0.80, 1.00],  // C2
+  [0.20, 0.60],  // C3
+];
+
+// C1 visits → correct; C2/C3 visits → wrong
+function buildCalibrationData() {
+  const binCorrect = CAL_BINS.map(() => 0);
+  const binTotal   = CAL_BINS.map(() => 0);
+
+  if (dataset.length > 0) {
+    // ── REAL dataset path ──────────────────────────────────────────────────
+    dataset.forEach(row => {
+      const conf = row.confidence; // already clamped [0,1] on ingest
+      for (let b = 0; b < CAL_BINS.length; b++) {
+        const { lo, hi } = CAL_BINS[b];
+        if (conf >= lo && (conf < hi || (b === CAL_BINS.length - 1 && conf <= hi))) {
+          binTotal[b]++;
+          binCorrect[b] += row.correct;
+          break;
+        }
+      }
+    });
+  } else {
+    // ── Synthetic fallback (simulation-based) ─────────────────────────────
+    hist.forEach(step => {
+      const state = step.next;
+      const [lo, hi] = STATE_CONF_RANGE[state];
+      const conf = lo + ((step.step * 0.6180339887) % 1) * (hi - lo);
+      const correct = state === 0 ? 1 : 0;
+
+      for (let b = 0; b < CAL_BINS.length; b++) {
+        if (conf >= CAL_BINS[b].lo && conf < CAL_BINS[b].hi) {
+          binTotal[b]++;
+          binCorrect[b] += correct;
+          break;
+        }
+      }
+      if (conf === 1.0) { binTotal[4]++; binCorrect[4] += correct; }
+    });
+  }
+
+  // Accuracy per bin — null if no samples (Chart.js skips nulls with spanGaps:false)
+  return CAL_BINS.map((_, b) =>
+    binTotal[b] > 0 ? parseFloat((binCorrect[b] / binTotal[b]).toFixed(4)) : null
+  );
+}
+
+function createCalibrationChart() {
+  const ctx = document.getElementById('calibrationChart').getContext('2d');
+  const labels   = CAL_BINS.map(b => `${b.lo}–${b.hi}`);
+  const diagonal = CAL_BINS.map(b => b.mid); // perfect calibration line
+
+  calChartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Perfect calibration',
+          data: diagonal,
+          borderColor: '#c4c0d8',
+          borderWidth: 1.8,
+          borderDash: [6, 4],
+          pointRadius: 0,
+          tension: 0,
+          fill: false,
+          order: 2,
+        },
+        {
+          label: 'Model calibration',
+          data: [null, null, null, null, null],
+          borderColor: '#818cf8',
+          backgroundColor: 'rgba(129,140,248,0.12)',
+          borderWidth: 2.5,
+          pointRadius: 5,
+          pointBackgroundColor: '#818cf8',
+          pointBorderColor: '#fff',
+          pointBorderWidth: 2,
+          pointHoverRadius: 7,
+          tension: 0.35,
+          fill: true,
+          spanGaps: false,
+          order: 1,
+        },
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 500, easing: 'easeOutQuart' },
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: {
+            font: { family: "'Outfit', sans-serif", size: 11, weight: '600' },
+            color: '#6d6b7e',
+            usePointStyle: true,
+            pointStyleWidth: 10,
+            padding: 18,
+          }
+        },
+        tooltip: {
+          backgroundColor: '#fff',
+          titleColor: '#3d3a4e',
+          bodyColor: '#6d6b7e',
+          borderColor: '#ede9e0',
+          borderWidth: 1,
+          titleFont: { family: "'Outfit', sans-serif", weight: '700', size: 12 },
+          bodyFont:  { family: "'JetBrains Mono', monospace", size: 11 },
+          callbacks: {
+            label: ctx => {
+              if (ctx.dataset.label === 'Perfect calibration') return null;
+              const v = ctx.parsed.y;
+              return v === null ? ' No samples in this bin' : ` Accuracy: ${(v * 100).toFixed(1)}%`;
+            }
+          },
+          filter: item => item.dataset.label !== 'Perfect calibration',
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          border: { display: false },
+          title: {
+            display: true,
+            text: 'Confidence bin',
+            font: { family: "'Outfit', sans-serif", size: 11, weight: '600' },
+            color: '#a8a29e',
+            padding: { top: 6 },
+          },
+          ticks: {
+            font: { family: "'JetBrains Mono', monospace", size: 10 },
+            color: '#b0adc8',
+          }
+        },
+        y: {
+          min: 0,
+          max: 1,
+          grid: { color: '#f0eefb', lineWidth: 1 },
+          border: { display: false },
+          title: {
+            display: true,
+            text: 'Actual accuracy',
+            font: { family: "'Outfit', sans-serif", size: 11, weight: '600' },
+            color: '#a8a29e',
+            padding: { bottom: 6 },
+          },
+          ticks: {
+            font: { family: "'JetBrains Mono', monospace", size: 10 },
+            color: '#b0adc8',
+            callback: v => (v * 100).toFixed(0) + '%',
+            maxTicksLimit: 6,
+          }
+        }
+      }
+    }
+  });
+}
+
+function renderCalibrationChart() {
+  if (!calChartInstance) return;
+  const modelData = buildCalibrationData();
+  calChartInstance.data.datasets[1].data = modelData;
+  calChartInstance.update();
+}
+
+function updateCalSubtitle() {
+  const el = document.getElementById('calDataSource');
+  if (!el) return;
+  if (dataset.length > 0) {
+    el.textContent = `· Using real dataset (${dataset.length} rows)`;
+    el.style.color = '#059669';
+  } else {
+    el.textContent = '· Using simulated calibration (no dataset)';
+    el.style.color = '#818cf8';
+  }
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
+buildMatrix();validatePi();
+setTimeout(() => { createChart(); createCalibrationChart(); }, 0);
+</script>
