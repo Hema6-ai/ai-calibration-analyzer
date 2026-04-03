@@ -1,143 +1,195 @@
-                                  AI Confidence Calibration Analyzer  
-### Modeling AI Uncertainty using Markov Chains & Metropolis-Hastings  
+# 🔍 AI Confidence Calibration Analyzer
+
+**Modeling AI Uncertainty using Markov Chains & Metropolis-Hastings**
 
 ---
 
-## 🔍 Overview
+## 🚀 Overview
 
-Modern AI systems often produce **overconfident predictions**, where the confidence score does not match actual correctness.
+Modern AI systems often produce **overconfident predictions**, where the reported confidence does not reflect true correctness.
 
-This project models that behavior using:
+This project provides an **interactive probabilistic simulation + real data analysis tool** to:
 
-- 🔗 Markov Chains  
-- 🎯 Metropolis-Hastings (MCMC)  
-- 📊 Stationary Distribution Analysis  
-- 🏆 MAP Inference  
-
-An interactive web tool is built to simulate and visualize this process.
+* Model AI behavior as a **Markov Chain**
+* Apply **Metropolis-Hastings (MCMC)** sampling
+* Analyze **stationary distributions**
+* Evaluate **confidence calibration using real datasets**
 
 ---
 
-## 🎯 Problem
+## 🎯 Problem Statement
 
-AI models can exist in the following states:
+AI systems frequently fall into this critical failure mode:
 
-- **C1:** High Confidence & Correct  
-- **C2:** High Confidence & Wrong ⚠️  
-- **C3:** Low Confidence  
+> ⚠️ High confidence, but wrong predictions
 
-### Goal:
-- Model transitions between states  
-- Estimate the true distribution using sampling  
-- Identify the most probable state  
+We model AI predictions into 3 states:
+
+| State | Meaning                    |
+| ----- | -------------------------- |
+| C1    | High Confidence & Correct  |
+| C2    | High Confidence & Wrong ⚠️ |
+| C3    | Low Confidence             |
 
 ---
 
 ## 🧠 Methodology
 
-### 1. Markov Chain  
-A transition probability matrix defines how the system moves between states.
+### 1. Markov Chain Modeling
 
-### 2. Metropolis-Hastings Algorithm  
+* Define transition probabilities between states
+* Simulate real-world prediction behavior
 
-\[
-\alpha = \min \left(1, \frac{\pi(x')}{\pi(x)} \right)
-\]
+### 2. Metropolis-Hastings Algorithm
 
-### 3. Simulation  
-- Step-by-step sampling  
-- Acceptance / rejection decisions  
-- Convergence to stationary distribution  
+Used for sampling from target distribution:
+
+α = min(1, π(x') / π(x))
+
+* Accept / reject transitions
+* Converges to stationary distribution
+
+### 3. Stationary Distribution
+
+* Empirical distribution from sampling
+* Compared with target π
+
+### 4. MAP Inference
+
+* Detect most probable system state
 
 ---
 
-## 💻 Features
+## 📊 Key Features
 
-- 🎨 Premium UI/UX interface  
-- 📌 Editable state configuration  
-- 🔢 Transition matrix validation  
-- ⚙️ Real-time M-H simulation  
-- ▶️ Step-by-step & auto-run modes  
-- 📋 Iteration log (accept/reject tracking)  
-- 📊 Stationary distribution visualization  
-- 🏆 MAP inference detection  
-- 💡 Insight generation  
+### 🔁 Simulation Engine
+
+* Step-by-step MH sampling
+* Auto-run simulation
+* Acceptance/rejection tracking
+
+### 📈 Visualization
+
+* Distribution comparison (π vs empirical)
+* Confidence calibration curve
+* Real-time updates
+
+### 📂 Real Dataset Integration (🔥 Major Feature)
+
+* Upload CSV dataset:
+
+  ```
+  prediction, confidence, actual
+  ```
+* Automatically:
+
+  * Computes π from real data
+  * Builds calibration curve from dataset
+  * Detects overconfidence patterns
+
+### 🎯 Calibration Analysis
+
+* 5-bin confidence evaluation
+* Detects:
+
+  * Overconfidence
+  * Underconfidence
+  * Miscalibration
 
 ---
 
 ## 🌐 Live Demo
 
-👉 **[Open Tool](https://hema6-ai.github.io/ai-calibration-analyzer/)**  
-
----
-
-## 🛠️ Tech Stack
-
-- HTML  
-- CSS (Custom UI Design)  
-- JavaScript (Simulation Logic)  
+👉 https://hema6-ai.github.io/ai-calibration-analyzer/
 
 ---
 
 ## ⚙️ How It Works
 
-1. Define states and probabilities (π)  
-2. Set transition matrix (P)  
-3. Validate constraints  
-4. Run Metropolis-Hastings sampling  
+### Step 1: Define States
 
-### Observe:
-- Markov chain path  
-- Acceptance decisions  
-- Converged distribution  
+* Configure prediction states (C1, C2, C3)
+* Set target distribution π
 
----
+### Step 2: Set Transition Matrix
 
-## 📊 Example Output
+* Each row must sum to 1
+* Represents behavior transitions
 
-### Stationary Distribution
-C1 ≈ 0.50
-C2 ≈ 0.33
-C3 ≈ 0.17
+### Step 3: (Optional) Upload Dataset
 
+* Real data overrides synthetic assumptions
+* π auto-updated from dataset
 
-### MAP Inference
+### Step 4: Run Simulation
 
-C1 (High Confidence & Correct)
+* Observe:
 
----
+  * Markov chain path
+  * Acceptance decisions
+  * Convergence behavior
 
-## ⚠️ Key Insight
+### Step 5: Analyze Output
 
-Even when AI performs well, it still spends time in:
-
-> ❗ High Confidence & Wrong state  
-
-This highlights the need for **better calibration techniques**.
+* Stationary distribution
+* MAP state
+* Calibration curve
 
 ---
 
-## 📌 Use Cases
+## 📊 Example Insight
 
-- 🏥 Medical AI  
-- 🤖 ML Model Calibration  
-- 📈 Financial Systems  
-- 🚗 Autonomous Systems  
+Even well-performing models may spend:
+
+> ❗ Significant time in "High Confidence & Wrong" state
+
+This indicates:
+
+* Poor calibration
+* Risk in real-world deployment
+
+---
+
+## 🛠️ Tech Stack
+
+* HTML (UI structure)
+* CSS (custom UI/UX)
+* JavaScript (core logic)
+* Chart.js (visualization)
 
 ---
 
 ## 🚧 Limitations
 
-- Simplified 3-state model  
-- No real dataset integration  
-- Approximate sampling  
+* Simplified 3-state model
+* Dataset must follow strict format
+* Calibration bins are fixed (5 bins)
+* No deep model integration (yet)
 
 ---
 
 ## 🔮 Future Improvements
 
-- Integrate real ML outputs  
-- Scale to high-dimensional models  
-- Use advanced MCMC methods  
-- Add uncertainty metrics  
+* Multi-class calibration support
+* Advanced MCMC methods (HMC, Gibbs)
+* Integration with real ML models (PyTorch / TensorFlow)
+* Uncertainty metrics (ECE, Brier Score)
+* Backend + API support
+
+---
+
+## 🧠 Key Insight
+
+> Calibration is not about accuracy —
+> it is about **trustworthiness of confidence**.
+
+---
+
+## 🏆 Use Cases
+
+* 🏥 Medical AI validation
+* 🤖 ML model calibration
+* 📈 Financial prediction systems
+* 🚗 Autonomous systems
+
 
