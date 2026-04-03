@@ -1,10 +1,10 @@
-# 🔍 AI Confidence Calibration Analyzer
+#  AI Confidence Calibration Analyzer
 
 **Modeling AI Uncertainty using Markov Chains & Metropolis-Hastings**
 
 ---
 
-## 🚀 Overview
+##  Overview
 
 Modern AI systems often produce **overconfident predictions**, where the reported confidence does not reflect true correctness.
 
@@ -17,7 +17,7 @@ This project provides an **interactive probabilistic simulation + real data anal
 
 ---
 
-## 🎯 Problem Statement
+##  Problem Statement
 
 AI systems frequently fall into this critical failure mode:
 
@@ -33,7 +33,7 @@ We model AI predictions into 3 states:
 
 ---
 
-## 🧠 Methodology
+##  Methodology
 
 ### 1. Markov Chain Modeling
 
