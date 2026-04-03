@@ -74,7 +74,7 @@ Used for sampling from target distribution:
 * Confidence calibration curve
 * Real-time updates
 
-### 📂 Real Dataset Integration (🔥 Major Feature)
+### 📂 Real Dataset Integration 
 
 * Upload CSV dataset:
 
