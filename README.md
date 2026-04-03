@@ -1,4 +1,4 @@
-                                                  AI Confidence Calibration Analyzer
+                                                AI Confidence Calibration Analyzer
 Modeling AI Uncertainty using Markov Chains & Metropolis-Hastings
 🔍 Overview
 
@@ -60,7 +60,7 @@ Convergence to stationary distribution
 💡 Insight generation
 🌐 Live Demo
 
-👉 Open Tool
+👉 Open Tool :- https://hema6-ai.github.io/ai-calibration-analyzer/
 
 🛠️ Tech Stack
 HTML
